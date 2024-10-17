@@ -331,8 +331,8 @@ static  void free_internal(state_t *state)
 // 
 
 /// Array maximum.  \returns the maximum value in a u32 array, \a s, with \a n elements.
-static u32 maximum(u32 *s, size_t n)
-{ u32 max=0;
+static u32 maximum(u8 *s, size_t n)
+{ u8 max=0;
   while(n--)
     max = (s[n]>max)?s[n]:max;
   return max;
@@ -362,7 +362,7 @@ This implies:
 \param[in]     N   The number of elements in the array \a s.
 
 */
-void cdf_build(real **cdf, size_t *M, u32 *s, size_t N)
+void cdf_build(real **cdf, size_t *M, u8 *s, size_t N)
 { size_t i,nbytes;
   *M = maximum(s,N)+1; 
   TRY( *cdf=realloc(*cdf,nbytes=sizeof(real)*(M[0]+1)) ); // cdf has M+1 elements

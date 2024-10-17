@@ -40,7 +40,7 @@ typedef float     real;
  *  <nsym>  the number of output symbols                               
  */
 
-void cdf_build(real **cdf, size_t *nsym, u32 *s, size_t ns);
+void cdf_build(real **cdf, size_t *nsym, u8 *s, size_t ns);
 
 /// \defgroup Encoding Encoding functions
 /// @{
