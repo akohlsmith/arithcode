@@ -1,131 +1,107 @@
-/// \file
-/// An simple demonstration.
-#include "ac.h"
 #include <stdio.h>
 
+#include "ac.h"
+
 #define countof(e) (sizeof(e)/sizeof(*(e)))
-#define ROW 80
-#define ENDL "\n"
-typedef unsigned long long u64;
 
-/// Prints out the encoded message using hex codes
-void pcode(u8 *out, size_t nout)
-{ size_t i,j;
-  printf("Code:\n");
-  for(i=0;i<nout;++i)
-  { for(j=0;j<ROW/3 && i<nout;j++,i++)
-      printf(" %02x",out[i]);
+
+static void dump(u8 *v, size_t n)
+{
+  size_t i, j;
+
+  for (i = 0; i < n; i++) {
+    for (j = 0; j < 80/2 && i<n; j++, i++) {
+      printf(" %02hhx", v[i]);
+    }
+
     --i;
     printf("\n");
   }
-  printf("--\n");
 }
 
-/// Prints out the encoded message using characters
-void pascii(u8 *out, size_t nout)
-{ size_t i,j;
-  printf("Code:\n");
-  for(i=0;i<nout;++i)
-  { for(j=0;j<ROW/2 && i<nout;j++,i++)
-      printf(" %c",out[i]+33);
-    --i;
-    printf("\n");
-  }
-  printf("--\n");
-}
 
-/// Prints decoded the message string.
-void pmsg(u32 *v,size_t n)
-{ size_t i,j;
-  printf("Message: %p\n",v);
-  for(i=0;i<n;++i)
-  { for(j=0;j<ROW/2 && i<n;j++,i++)
-      printf(" %d",v[i]);
-    --i;
-    printf("\n");
-  }
-  printf("--\n");
-}
+int main(int argc, char **argv)
+{
+#if 1
+	u8 in[] = {
+  0x0a, 0x22, 0x08, 0xef, 0x0d, 0x10, 0xfc, 0x01, 0x10, 0x09, 0x10, 0x42,
+  0x10, 0xfe, 0x01, 0x10, 0x26, 0x10, 0x8f, 0x01, 0x10, 0x2d, 0x10, 0xec,
+  0x01, 0x10, 0x22, 0x10, 0x95, 0x01, 0x10, 0x94, 0x01, 0x10, 0xe4, 0x01,
+  0x0a, 0x17, 0x08, 0xfc, 0x0a, 0x10, 0x6d, 0x10, 0x2c, 0x10, 0x0d, 0x10,
+  0x16, 0x10, 0xf4, 0x01, 0x10, 0x10, 0x10, 0xb5, 0x01, 0x10, 0x18, 0x10,
+  0x3d, 0x0a, 0x28, 0x08, 0xd5, 0x08, 0x10, 0x61, 0x10, 0xf9, 0x01, 0x10,
+  0x9f, 0x01, 0x10, 0x09, 0x10, 0x6c, 0x10, 0xae, 0x01, 0x10, 0xf3, 0x01,
+  0x10, 0x91, 0x01, 0x10, 0x09, 0x10, 0x23, 0x10, 0xd0, 0x01, 0x10, 0xfe,
+  0x01, 0x10, 0xd7, 0x01, 0x10, 0xd4, 0x01, 0x0a, 0x1e, 0x08, 0x85, 0x0f,
+  0x10, 0x02, 0x10, 0xde, 0x01, 0x10, 0x94, 0x01, 0x10, 0x42, 0x10, 0x8c,
+  0x01, 0x10, 0x76, 0x10, 0x12, 0x10, 0xa6, 0x01, 0x10, 0x98, 0x01, 0x10,
+  0x02, 0x10, 0x5a, 0x0a, 0x1c, 0x08, 0xb9, 0x0a, 0x10, 0xe3, 0x01, 0x10,
+  0x14, 0x10, 0x57, 0x10, 0xea, 0x01, 0x10, 0x85, 0x01, 0x10, 0x24, 0x10,
+  0xfb, 0x01, 0x10, 0x38, 0x10, 0x59, 0x10, 0xde, 0x01, 0x0a, 0x21, 0x08,
+  0x82, 0x0a, 0x10, 0xde, 0x01, 0x10, 0x0e, 0x10, 0xdd, 0x01, 0x10, 0xf0,
+  0x01, 0x10, 0x9b, 0x01, 0x10, 0xfb, 0x01, 0x10, 0xca, 0x01, 0x10, 0x47,
+  0x10, 0xd7, 0x01, 0x10, 0x1b, 0x10, 0xf7, 0x01, 0x0a, 0x28, 0x08, 0x89,
+  0x0e, 0x10, 0xcd, 0x01, 0x10, 0x47, 0x10, 0x3b, 0x10, 0x8a, 0x01, 0x10,
+  0x9e, 0x01, 0x10, 0xdd, 0x01, 0x10, 0x95, 0x01, 0x10, 0xda, 0x01, 0x10,
+  0xd4, 0x01, 0x10, 0x7a, 0x10, 0xfe, 0x01, 0x10, 0x13, 0x10, 0x51, 0x10,
+  0xbf, 0x01, 0x0a, 0x0b, 0x08, 0xb0, 0x08, 0x10, 0xe2, 0x01, 0x10, 0xea,
+  0x01, 0x10, 0x20, 0x0a, 0x0a, 0x08, 0xe3, 0x0f, 0x10, 0x5f, 0x10, 0xfa,
+  0x01, 0x10, 0x24, 0x0a, 0x11, 0x08, 0xc4, 0x0a, 0x10, 0xb5, 0x01, 0x10,
+  0xbf, 0x01, 0x10, 0x58, 0x10, 0x9f, 0x01, 0x10, 0xce, 0x01
+};
 
-/// A simple demo
-int main(int argc, char* argv[])
-{ u32  s[] = {2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0,
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0, 
-              2,1,0,0,0,0,0,0,0,0,0,0,3,3,2,3,2,1,0},
-          //0     x x x x x x x x x x             x    11 /19
-          //1   x                               x       2
-          //2 x                           x   x         3
-          //3                         x x   x           3
-          //                                           19
-       *t=0;
-  real c[] =   {0.0,11/19.0, 13/19.0, 16/19.0, 1.0};
-  //real c[] = {0.0,    0.2,     0.7,     0.9, 1.0};
-  u8    *out = NULL;
-  size_t nout = 0,nt=countof(t);
-
-  pmsg(s,countof(s));
-#if 0
-  encode_u8_u32((void**)&out,&nout,s,countof(s),c,countof(c)-1);
-  pcode(out,nout);
-  printf("Compression: %3.2f%% (%llu bytes -> %llu bytes)"ENDL,100.0*nout/(double)sizeof(s),(u64)sizeof(s),(u64)nout);
-  decode_u32_u8(&t,&nt,out,nout,c,countof(c)-1);
 #else
-  { // ASCII normalish is from 33 to 126 inclusive, 94 things
-    int    D = 94; //2;
-    vencode_u32(&out,&nout,D,s,countof(s),countof(c)-1,c);
-    pascii(out,nout);
-    printf("Compression: %3.2f%% (%llu bytes -> %llu bytes)"ENDL,
-        100.0*nout/(double)sizeof(s),
-        (u64)sizeof(s),
-        (u64)nout);
-    vdecode_u32(&t,&nt,countof(c)-1,out,nout,D ,c);
-  }
+  u8 in[] = {
+  	0x0a, 0x14, 0x08, 0xe9, 0x09, 0x10, 0x08, 0x10, 0x0f, 0x10, 0xdd, 0x01,
+    0x10, 0x54, 0x10, 0x4c, 0x10, 0x67, 0x10, 0x3e, 0x10, 0x13, 0x0a, 0x09,
+    0x08, 0x80, 0x0a, 0x10, 0x03, 0x10, 0x33, 0x10, 0x6b
+  };
 #endif
-  if(nt != countof(s))
-    printf("*** Wrong symbol count. Got: %zu Expected: %zu"ENDL,nt,(size_t)countof(s));
-  pmsg(t,countof(s));
 
-  free(out);
-  free(t);
+  float *cdf = NULL;
+  size_t nsym = 0;
+
+  u8 *out = NULL;
+  size_t nout = 0;
+
+  u8 *unc = NULL;
+  size_t nunc = 0;
+
+  printf("Input message:\n");
+  dump(in, countof(in));
+
+  cdf_build(&cdf, &nsym, in, countof(in));
+  printf("\nCDF: %zd entries:\n", nsym + 1);
+  for (int i = 0; i < nsym + 1; i++) {
+	  printf("%.3f ", cdf[i]);
+    if ((i % 16) == 15) {
+      printf("\n");
+    }
+  }
+  printf("\n");
+
+#if 1
+  encode_u8_u8((void **)&out, &nout, in, countof(in), cdf, nsym);
+  decode_u8_u8(&unc, &nunc, out, nout, cdf, nsym);
+#else
+
+  int D = 128;
+  vencode_u8(&out, &nout, D, in, countof(in), nsym, cdf);
+  vdecode_u8(&unc, &nunc, nsym, out, nout, D, cdf);
+#endif
+
+  printf("\nCompression: %3.2f%% (%zd bytes -> %zd bytes)\n", 100.0f * (float)nout / (float)countof(in), countof(in), nout);
+  printf("Compressed message:\n");
+  dump(out, nout);
+  printf("\n");
+
+  if(nunc != countof(in)) {
+    printf("*** Wrong symbol count. Expected: %zu, got %zu ***\n", countof(in), nunc);
+  }
+
+  printf("Uncompressed message:\n");
+  dump(unc, nunc);
+
   return 0;
 }
 
